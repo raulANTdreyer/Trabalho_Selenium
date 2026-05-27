@@ -11,6 +11,7 @@ class acesso_da_pagina:
         self.cmp_usuario = (By.ID, "user-name")
         self.cmp_senha = (By.ID, "password")
         self.bt_login = (By.ID, "login-button")
+        self.msg_erro = (By.CSS_SELECTOR, "[data-test ='error']")
 
     def abrir(self):
 
@@ -21,3 +22,6 @@ class acesso_da_pagina:
         self.navegador.find_element(*self.cmp_usuario).send_keys(usuario)
         self.navegador.find_element(*self.cmp_senha).send_keys(senha)
         self.navegador.find_element(*self.bt_login).click()
+
+    def obter_txt_erro(self):
+        return self.navegador.find_element(*self.msg_erro).text
