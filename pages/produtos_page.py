@@ -11,10 +11,22 @@ class pgn_produtos:
 
         self.shopp_cntner = (By.ID, "shopping_cart_container")
 
+        self.btn_rmv_bike_lig = (By.ID, "remove-sauce-labs-bike-light")
+
     def adc_mochila(self):
 
         self.navegador.find_element(*self.btn_add_bike_lig).click()
 
+    def rmv_mochila(self):
+
+        self.navegador.find_element(*self.btn_rmv_bike_lig).click()
+
     def obt_quant_car(self):
 
-        return self.navegador.find_element(*self.shopp_cntner).text
+        try:
+
+            return self.navegador.find_element(*self.shopp_cntner).text
+
+        except:
+
+            return "0"

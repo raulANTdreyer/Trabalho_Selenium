@@ -37,3 +37,22 @@ def test_adc_car(pesquisa):
     produtos.adc_mochila()
 
     assert produtos.obt_quant_car() == "1"
+
+
+def test_rmv_car(pesquisa):
+
+    acesso = acesso_da_pgn(pesquisa)
+
+    acesso.abrir()
+
+    acesso.realizar_acesso("visual_user", "secret_sauce")
+
+    produtos = pgn_produtos(pesquisa)
+
+    produtos.adc_mochila()
+
+    assert produtos.obt_quant_car() == "1"
+
+    produtos.rmv_mochila()
+
+    assert produtos.obt_quant_car() == ""
