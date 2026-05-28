@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 
 
-class acesso_da_pagina:
+class acesso_da_pgn:
 
     def __init__(self, navegador):
 
