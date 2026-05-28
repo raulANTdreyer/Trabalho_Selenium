@@ -1,32 +1,35 @@
 from selenium.webdriver.common.by import By
 
 
-class pgn_produtos:
+class ProdutosPage:
 
     def __init__(self, navegador):
 
         self.navegador = navegador
 
-        self.btn_add_bike_lig = (By.ID, "add-to-cart-sauce-labs-bike-light")
+        self.botao_add_bike_light = (
+            By.ID, "add-to-cart-sauce-labs-bike-light")
+        self.botao_remove_bike_light = (By.ID, "remove-sauce-labs-bike-light")
+        self.container_carrinho = (By.ID, "shopping_cart_container")
 
-        self.shopp_cntner = (By.ID, "shopping_cart_container")
+    def adicionar_lanterna_bike(self):
 
-        self.btn_rmv_bike_lig = (By.ID, "remove-sauce-labs-bike-light")
+        self.navegador.find_element(*self.botao_add_bike_light).click()
 
-    def adc_mochila(self):
+    def remover_lanterna_bike(self):
 
-        self.navegador.find_element(*self.btn_add_bike_lig).click()
+        self.navegador.find_element(*self.botao_remove_bike_light).click()
 
-    def rmv_mochila(self):
-
-        self.navegador.find_element(*self.btn_rmv_bike_lig).click()
-
-    def obt_quant_car(self):
+    def obter_quantidade_carrinho(self):
 
         try:
 
-            return self.navegador.find_element(*self.shopp_cntner).text
+            return self.navegador.find_element(*self.container_carrinho).text
 
         except:
 
-            return "0"
+            return ""
+
+    def abrir_carrinho(self):
+
+        self.navegador.find_element(*self.container_carrinho).click()

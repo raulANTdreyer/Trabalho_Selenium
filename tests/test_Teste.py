@@ -1,58 +1,69 @@
-from pages.login_page import acesso_da_pgn
-from pages.produtos_page import pgn_produtos
+from pages.login_page import LoginPage
+from pages.produtos_page import ProdutosPage
+from pages.checkout_page import CheckoutPage
 
 
 def test_exito(pesquisa):
 
-    acesso = acesso_da_pgn(pesquisa)
-
-    acesso.abrir()
-    acesso.realizar_acesso("visual_user", "secret_sauce")
+    login = LoginPage(pesquisa)
+    login.abrir()
+    login.realizar_login("visual_user", "secret_sauce")
 
     assert "inventory.html" in pesquisa.current_url
 
 
 def test_fiasco(pesquisa):
 
-    acesso = acesso_da_pgn(pesquisa)
+    login = LoginPage(pesquisa)
+    login.abrir()
+    login.realizar_login("locked_out_user", "secret_sauce")
 
-    acesso.abrir()
+    texto_falha = login.obter_texto_erro()
 
-    acesso.realizar_acesso("locked_out_user", "secret_sauce")
-
-    texto_falha = acesso.obter_txt_erro()
     assert "Sorry, this user has been locked out" in texto_falha
 
 
-def test_adc_car(pesquisa):
+def test_adicionar_ao_carrinho(pesquisa):
 
-    acesso = acesso_da_pgn(pesquisa)
+    login = LoginPage(pesquisa)
+    login.abrir()
+    login.realizar_login("visual_user", "secret_sauce")
 
-    acesso.abrir()
+    produtos = ProdutosPage(pesquisa)
+    produtos.adicionar_lanterna_bike()
 
-    acesso.realizar_acesso("visual_user", "secret_sauce")
-
-    produtos = pgn_produtos(pesquisa)
-
-    produtos.adc_mochila()
-
-    assert produtos.obt_quant_car() == "1"
+    assert produtos.obter_quantidade_carrinho() == "1"
 
 
-def test_rmv_car(pesquisa):
+def test_remover_do_carrinho(pesquisa):
 
-    acesso = acesso_da_pgn(pesquisa)
+    login = LoginPage(pesquisa)
+    login.abrir()
+    login.realizar_login("visual_user", "secret_sauce")
 
-    acesso.abrir()
+    produtos = ProdutosPage(pesquisa)
+    produtos.adicionar_lanterna_bike()
 
-    acesso.realizar_acesso("visual_user", "secret_sauce")
+    assert produtos.obter_quantidade_carrinho() == "1"
 
-    produtos = pgn_produtos(pesquisa)
+    produtos.remover_lanterna_bike()
 
-    produtos.adc_mochila()
+    assert produtos.obter_quantidade_carrinho() == ""
 
-    assert produtos.obt_quant_car() == "1"
 
-    produtos.rmv_mochila()
+def test_fluxo_compra_completo(pesquisa):
 
-    assert produtos.obt_quant_car() == ""
+    login = LoginPage(pesquisa)
+    login.abrir()
+    login.realizar_login("visual_user", "secret_sauce")
+
+    produtos = ProdutosPage(pesquisa)
+    produtos.adicionar_lanterna_bike()
+    produtos.abrir_carrinho()
+
+    checkout = CheckoutPage(pesquisa)
+    checkout.clicar_checkout()
+    checkout.preencher_dados_cliente("Raul", "Antônio", "95560000")
+    checkout.finalizar_compra()
+
+    assert checkout.obter_mensagem_sucesso() == "Thank you for your order!"

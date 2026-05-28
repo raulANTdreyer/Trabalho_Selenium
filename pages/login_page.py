@@ -1,27 +1,27 @@
 from selenium.webdriver.common.by import By
 
-
-class acesso_da_pgn:
+class LoginPage:
 
     def __init__(self, navegador):
 
         self.navegador = navegador
-
         self.url = "https://www.saucedemo.com/"
-        self.cmp_usuario = (By.ID, "user-name")
-        self.cmp_senha = (By.ID, "password")
-        self.bt_login = (By.ID, "login-button")
-        self.msg_erro = (By.CSS_SELECTOR, "[data-test ='error']")
+
+        self.campo_usuario = (By.ID, "user-name")
+        self.campo_senha = (By.ID, "password")
+        self.botao_login = (By.ID, "login-button")
+        self.mensagem_erro = (By.CSS_SELECTOR, "[data-test='error']")
 
     def abrir(self):
 
         self.navegador.get(self.url)
 
-    def realizar_acesso(self, usuario, senha):
+    def realizar_login(self, usuario, senha):
 
-        self.navegador.find_element(*self.cmp_usuario).send_keys(usuario)
-        self.navegador.find_element(*self.cmp_senha).send_keys(senha)
-        self.navegador.find_element(*self.bt_login).click()
+        self.navegador.find_element(*self.campo_usuario).send_keys(usuario)
+        self.navegador.find_element(*self.campo_senha).send_keys(senha)
+        self.navegador.find_element(*self.botao_login).click()
 
-    def obter_txt_erro(self):
-        return self.navegador.find_element(*self.msg_erro).text
+    def obter_texto_erro(self):
+
+        return self.navegador.find_element(*self.mensagem_erro).text
