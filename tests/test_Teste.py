@@ -7,7 +7,7 @@ def test_exito(pesquisa):
 
     login = LoginPage(pesquisa)
     login.abrir()
-    login.realizar_login("visual_user", "secret_sauce")
+    login.realizar_login("standard_user", "secret_sauce")
 
     assert "inventory.html" in pesquisa.current_url
 
