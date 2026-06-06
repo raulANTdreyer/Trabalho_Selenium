@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 class CheckoutPage:
     def __init__(self, navegador):
         self.navegador = navegador
-        # 20 segundos de espera explícita para aguentar a lentidão da gravação
+
         self.wait = WebDriverWait(self.navegador, 20)
 
         self.botao_checkout = (By.ID, "checkout")
@@ -39,14 +39,12 @@ class CheckoutPage:
         c_cep.clear()
         c_cep.send_keys(cep)
 
-        # Pausa de meio segundo para garantir que o site processou o texto antes do clique
         time.sleep(0.5)
 
-        # Clica no botão Continue de forma padrão
         self.wait.until(EC.element_to_be_clickable(
+
             self.botao_continue)).click()
 
-        # Aguarda a transição de URL para o passo 2
         self.wait.until(EC.url_contains("checkout-step-two.html"))
 
     def finalizar_compra(self):
