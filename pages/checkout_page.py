@@ -23,7 +23,7 @@ class CheckoutPage:
             self.botao_checkout)).click()
 
     def preencher_dados_cliente(self, nome, sobrenome, cep):
-        # Garante foco, limpa e preenche cada campo
+
         c_nome = self.wait.until(
             EC.visibility_of_element_located(self.campo_nome))
         c_nome.clear()
