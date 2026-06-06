@@ -7,6 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 class CheckoutPage:
     def __init__(self, navegador):
         self.navegador = navegador
+        # 20 segundos de espera explícita para aguentar a lentidão da gravação
         self.wait = WebDriverWait(self.navegador, 20)
 
         self.botao_checkout = (By.ID, "checkout")
@@ -22,29 +23,30 @@ class CheckoutPage:
             self.botao_checkout)).click()
 
     def preencher_dados_cliente(self, nome, sobrenome, cep):
-        # Localiza o primeiro campo, limpa e digita com calma
-        campo1 = self.wait.until(
+        # Garante foco, limpa e preenche cada campo
+        c_nome = self.wait.until(
             EC.visibility_of_element_located(self.campo_nome))
-        campo1.clear()
-        campo1.send_keys(nome)
-        time.sleep(0.5)  # Pausa milimétrica para o PC lento processar
+        c_nome.clear()
+        c_nome.send_keys(nome)
 
-        campo2 = self.wait.until(
+        c_sobrenome = self.wait.until(
             EC.visibility_of_element_located(self.campo_sobrenome))
-        campo2.clear()
-        campo2.send_keys(sobrenome)
-        time.sleep(0.5)
+        c_sobrenome.clear()
+        c_sobrenome.send_keys(sobrenome)
 
-        campo3 = self.wait.until(
+        c_cep = self.wait.until(
             EC.visibility_of_element_located(self.campo_cep))
-        campo3.clear()
-        campo3.send_keys(cep)
+        c_cep.clear()
+        c_cep.send_keys(cep)
+
+        # Pausa de meio segundo para garantir que o site processou o texto antes do clique
         time.sleep(0.5)
 
-        botao = self.wait.until(
-            EC.element_to_be_clickable(self.botao_continue))
-        botao.click()
+        # Clica no botão Continue de forma padrão
+        self.wait.until(EC.element_to_be_clickable(
+            self.botao_continue)).click()
 
+        # Aguarda a transição de URL para o passo 2
         self.wait.until(EC.url_contains("checkout-step-two.html"))
 
     def finalizar_compra(self):
