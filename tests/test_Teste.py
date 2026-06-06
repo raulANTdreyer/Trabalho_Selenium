@@ -55,7 +55,7 @@ def test_fluxo_compra_completo(pesquisa):
 
     login = LoginPage(pesquisa)
     login.abrir()
-    login.realizar_login("visual_user", "secret_sauce")
+    login.realizar_login("standard_user", "secret_sauce")
 
     produtos = ProdutosPage(pesquisa)
     produtos.adicionar_lanterna_bike()
@@ -63,7 +63,7 @@ def test_fluxo_compra_completo(pesquisa):
 
     checkout = CheckoutPage(pesquisa)
     checkout.clicar_checkout()
-    checkout.preencher_dados_cliente("Raul", "Antônio", "95560000")
+    checkout.preencher_dados_cliente("Raul", "Dreyer", "95560000")
     checkout.finalizar_compra()
 
     assert checkout.obter_mensagem_sucesso() == "Thank you for your order!"
